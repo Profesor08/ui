@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "files": ["packages/masonry/src/Masonry.ts"]
+}
