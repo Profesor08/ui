@@ -1,9 +1,9 @@
+import { Masonry } from "@/components/masonry/Masonry";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Masonry } from "masonry";
-import { data } from "./data";
+import { data } from "../data/cities";
 
 const meta = {
-  title: "Example/Masonry",
+  title: "UI/Masonry",
 
   component: Masonry,
 

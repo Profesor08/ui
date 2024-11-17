@@ -5,14 +5,13 @@
   "author": "Profesor08",
   "license": "ISC",
   "type": "module",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "rm -rf ./lib && tsc -p tsconfig.build.json && vite build",
-    "preview": "vite preview",
+    "dev": "storybook dev -p 3000 --no-open",
+    "build": "rm -rf ./lib && npx tsc -p tsconfig.build.json && storybook build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 3000",
     "build-storybook": "storybook build"
   },
   "keywords": [
