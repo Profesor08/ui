@@ -29,6 +29,12 @@ export default defineConfig(async ({ mode }) => {
           return `${component}_${name}_${hash}_${lineNumber}`;
         },
       },
+
+      preprocessorOptions: {
+        sass: {
+          silenceDeprecations: ["legacy-js-api"],
+        },
+      },
     },
   } satisfies UserConfig;
 });

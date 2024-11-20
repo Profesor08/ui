@@ -1,0 +1,7 @@
+.dialog {
+  scrollbar-width: none;
+
+  &::backdrop {
+    opacity: inherit;
+  }
+}

@@ -1,0 +1,48 @@
+.sheet {
+  padding: 0;
+  background-color: white;
+  border-radius: 1rem 1rem 0 0;
+  border: 1px solid lightgrey;
+  box-shadow: 0 0.8rem 2rem grey;
+  scroll-timeline: --scroll-timeline y;
+}
+
+@keyframes sticky-shadow {
+  from {
+    --sticky-shadow: 0;
+  }
+
+  to {
+    --sticky-shadow: 1rem;
+  }
+}
+
+.heder {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: inherit;
+  box-shadow: 0 0 var(--sticky-shadow) grey;
+  animation-name: sticky-shadow;
+  animation-timeline: --scroll-timeline;
+}
+
+.body {
+  padding: 0.5rem 1rem;
+  background-color: inherit;
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  padding: 0.5rem 1rem;
+  background-color: inherit;
+  box-shadow: 0 0 var(--sticky-shadow) grey;
+  animation-name: sticky-shadow;
+  animation-timeline: --scroll-timeline;
+  animation-direction: reverse;
+}
