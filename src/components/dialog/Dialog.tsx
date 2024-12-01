@@ -1,14 +1,6 @@
-"use client";
-
 import clsx from "clsx";
 import { AnimatePresence, AnimationProps, motion } from "motion/react";
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "./Dialog.module.scss";
 
@@ -118,7 +110,3 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
 };
 
 Dialog.Context = DialogContext;
-
-export const useDialog = () => {
-  return useContext(Dialog.Context);
-};
