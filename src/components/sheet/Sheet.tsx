@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { AnimationProps } from "motion/react";
-import { useContext } from "react";
 import { Dialog } from "../dialog/Dialog";
 import styles from "./Sheet.module.scss";
 
@@ -41,7 +40,3 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
 };
 
 Sheet.Context = Dialog.Context;
-
-export const useSheet = () => {
-  return useContext(Sheet.Context);
-};
