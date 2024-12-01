@@ -1,9 +1,11 @@
 {
   "extends": "./tsconfig.json",
-  "files": ["src/index.ts"],
+  "files": ["src/vite-env.d.ts", "src/index.ts"],
   "compilerOptions": {
-    "outDir": "./lib",
+    "outDir": "./dist",
     "noEmit": false,
-    "jsx": "react-jsx"
-  }
+    "jsx": "react-jsx",
+    "emitDeclarationOnly": true
+  },
+  "include": ["**/*.scss"]
 }

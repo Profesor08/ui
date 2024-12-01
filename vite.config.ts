@@ -3,7 +3,9 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import stringHash from "string-hash";
 import { defineConfig, UserConfig } from "vite";
+import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
+import pkg from "./package.json";
 
 export default defineConfig(async ({ mode }) => {
   return {
@@ -11,7 +13,14 @@ export default defineConfig(async ({ mode }) => {
       port: 3000,
     },
 
-    plugins: [react(), tsconfigPaths()],
+    plugins: [
+      react(),
+      tsconfigPaths(),
+      dts({
+        insertTypesEntry: true,
+        tsconfigPath: "./tsconfig.build.json",
+      }),
+    ],
 
     base: mode === "production" ? "/ui" : "/",
 
@@ -31,9 +40,24 @@ export default defineConfig(async ({ mode }) => {
       },
 
       preprocessorOptions: {
-        sass: {
+        scss: {
           silenceDeprecations: ["legacy-js-api"],
         },
+      },
+    },
+
+    build: {
+      lib: {
+        entry: "src/index.ts",
+        name: "index",
+        fileName: "index",
+        formats: ["es"],
+      },
+
+      rollupOptions: {
+        external: Object.keys(pkg.dependencies)
+          .map((name) => [name, new RegExp(`${name}/(.*)`)])
+          .flat(),
       },
     },
   } satisfies UserConfig;

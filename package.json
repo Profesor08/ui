@@ -5,10 +5,20 @@
   "author": "Profesor08",
   "license": "ISC",
   "type": "module",
-  "main": "./lib/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      }
+    },
+    "./style.css": "./dist/style.css"
+  },
   "scripts": {
     "dev": "storybook dev -p 3000 --no-open",
-    "build": "rm -rf ./lib && npx tsc -p tsconfig.build.json && storybook build",
+    "build": "vite build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && storybook build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "storybook": "storybook dev -p 3000",
@@ -42,8 +52,10 @@
     "sass": "^1.81.0",
     "storybook": "^8.4.4",
     "string-hash": "^1.1.3",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.6.3",
     "vite": "^5.4.11",
+    "vite-plugin-dts": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.2"
   },
   "peerDependencies": {
@@ -54,8 +66,8 @@
     "@prof-dev/masonry": "^2.0.11",
     "clsx": "^2.1.1",
     "motion": "^11.11.17",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "eslintConfig": {
     "extends": [
