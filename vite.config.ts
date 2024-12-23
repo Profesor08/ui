@@ -7,14 +7,24 @@ import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
 
-export default defineConfig(async ({ mode }) => {
+export default defineConfig(async ({ mode, command }) => {
+  const babelPlugins = [["babel-plugin-react-compiler", {}]];
+
+  if (command === "serve") {
+    babelPlugins.push(["@babel/plugin-transform-react-jsx-development", {}]);
+  }
+
   return {
     server: {
       port: 3000,
     },
 
     plugins: [
-      react(),
+      react({
+        babel: {
+          plugins: babelPlugins,
+        },
+      }),
       tsconfigPaths(),
       dts({
         insertTypesEntry: true,
