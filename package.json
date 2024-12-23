@@ -4,6 +4,7 @@
   "description": "UI components for React",
   "author": "Profesor08",
   "license": "ISC",
+  "private": false,
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
