@@ -1,1 +1,9 @@
 !lib/
+dist-storybook/
+.storybook/
+public/
+src/
+index.html
+tsconfig.json
+tsconfig.build.json
+vite.config.ts
