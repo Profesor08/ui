@@ -6,6 +6,5 @@
     "noEmit": false,
     "jsx": "react-jsx",
     "emitDeclarationOnly": true
-  },
-  "include": ["**/*.scss"]
+  }
 }

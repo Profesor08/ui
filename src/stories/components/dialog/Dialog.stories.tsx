@@ -1,7 +1,7 @@
 import { Dialog } from "@/components/dialog/Dialog";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import styles from "./Dialog.module.scss";
+import styles from "./Dialog.module.css";
 
 const meta = {
   title: "UI/Dialog",

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { AnimatePresence, AnimationProps, motion } from "motion/react";
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import styles from "./Dialog.module.scss";
+import styles from "./Dialog.module.css";
 
 export interface DialogProps extends AnimationProps {
   onClose?: () => void;

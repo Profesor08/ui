@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { AnimationProps } from "motion/react";
 import { Dialog } from "../dialog/Dialog";
-import styles from "./Sheet.module.scss";
+import styles from "./Sheet.module.css";
 
 export interface SheetProps extends Pick<AnimationProps, "transition"> {
   onClose?: () => void;

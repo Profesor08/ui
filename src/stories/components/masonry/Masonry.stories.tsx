@@ -1,7 +1,7 @@
 import { Masonry } from "@/components/masonry/Masonry";
 import { data } from "@/stories/data/cities";
 import type { Meta, StoryObj } from "@storybook/react";
-import styles from "./Masonry.module.scss";
+import styles from "./Masonry.module.css";
 
 const meta = {
   title: "UI/Masonry",

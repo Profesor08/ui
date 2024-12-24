@@ -1,7 +1,7 @@
 import { Sheet } from "@/components/sheet/Sheet";
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import styles from "./Sheet.module.scss";
+import styles from "./Sheet.module.css";
 
 const meta = {
   title: "UI/Sheet",

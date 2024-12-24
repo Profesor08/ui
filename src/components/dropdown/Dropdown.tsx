@@ -12,7 +12,7 @@ import {
   useRole,
 } from "@floating-ui/react";
 import { createContext, useContext, useMemo, useState } from "react";
-import styles from "./Dropdown.module.scss";
+import styles from "./Dropdown.module.css";
 
 export interface DropdownProps {
   placement?: Placement;
