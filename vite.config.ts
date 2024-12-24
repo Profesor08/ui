@@ -27,7 +27,8 @@ export default defineConfig(async ({ mode, command }) => {
       }),
       tsconfigPaths(),
       dts({
-        insertTypesEntry: true,
+        // insertTypesEntry: true,
+        // rollupTypes: true,
         tsconfigPath: "./tsconfig.build.json",
       }),
     ],

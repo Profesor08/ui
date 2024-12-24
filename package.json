@@ -15,6 +15,7 @@
   "scripts": {
     "dev": "storybook dev -p 3000 --no-open",
     "build": "vite build && storybook build -o dist-storybook",
+    "prepublish": "npm run build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist-storybook",
     "storybook": "storybook dev -p 3000",
