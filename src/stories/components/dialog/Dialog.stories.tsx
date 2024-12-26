@@ -14,7 +14,27 @@ const meta = {
 
   tags: ["autodocs"],
 
-  argTypes: {},
+  argTypes: {
+    dismiss: {
+      control: "boolean",
+      description:
+        "Determines if the dialog can be closed by pressing the Escape key. Default: true.",
+    },
+
+    duration: {
+      control: {
+        type: "number",
+        min: 0,
+        step: 0.01,
+      },
+      description: "Specifies the animation duration in seconds. Default: 0.3.",
+    },
+  },
+
+  args: {
+    dismiss: true,
+    duration: 0.3,
+  },
 } satisfies Meta<typeof Dialog>;
 
 export default meta;
@@ -22,7 +42,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => {
+  render: ({ dismiss, duration }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -30,7 +50,12 @@ export const Default: Story = {
         <button onClick={() => setOpen(true)}>Open Dialog</button>
 
         {open === true && (
-          <Dialog className={styles.dialog} onClose={() => setOpen(false)}>
+          <Dialog
+            className={styles.dialog}
+            dismiss={dismiss}
+            duration={duration}
+            onClose={() => setOpen(false)}
+          >
             <div className={styles.heder}>
               <div className={styles.title}>Example Dialog</div>
               <Dialog.Context.Consumer>
@@ -42,6 +67,16 @@ export const Default: Story = {
               </Dialog.Context.Consumer>
             </div>
             <div className={styles.body}>
+              <div className={styles.text}>
+                This example demonstrates how to use a headless dialog
+                component. All you need to do is design a visually appealing
+                block and place it inside the dialog.
+              </div>
+              <div className={styles.text}>
+                This example demonstrates how to use a headless dialog
+                component. All you need to do is design a visually appealing
+                block and place it inside the dialog.
+              </div>
               <div className={styles.text}>
                 This example demonstrates how to use a headless dialog
                 component. All you need to do is design a visually appealing
@@ -59,7 +94,7 @@ export const Default: Story = {
 };
 
 export const CustomAnimation: Story = {
-  render: () => {
+  render: ({ dismiss, duration }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -69,8 +104,9 @@ export const CustomAnimation: Story = {
         {open === true && (
           <Dialog
             className={styles.dialog}
+            dismiss={dismiss}
+            duration={duration}
             onClose={() => setOpen(false)}
-            duration={0.3}
             initial={{ opacity: 0, translateY: "1rem", scale: 0.5 }}
             animate={{ opacity: 1, translateY: 0, scale: 1 }}
             exit={{ opacity: 0, translateY: "-1rem", scale: 1.5 }}

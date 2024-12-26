@@ -8,6 +8,7 @@ export interface DialogProps extends AnimationProps {
   onClose?: () => void;
   className?: string;
   duration?: number;
+  dismiss?: boolean;
 }
 
 export interface DialogContextProps {
@@ -27,6 +28,7 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
   className,
   children,
   duration = 0.3,
+  dismiss = true,
   initial = { opacity: 0, translateY: "1rem" },
   animate = { opacity: 1, translateY: 0 },
   exit = { opacity: 0, translateY: "-1rem" },
@@ -44,44 +46,47 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
   };
 
   const onDismiss = (event: React.MouseEvent) => {
-    const isOutside =
-      event.target instanceof Node &&
-      dialogRef.current?.contains(event.target) === false;
+    if (dismiss === true) {
+      const isOutside =
+        event.target instanceof Node &&
+        dialogRef.current?.contains(event.target) === false;
 
-    if (isOutside === true) {
-      setOpen(false);
-    } else if (
-      dialogRef.current !== null &&
-      event.target === dialogRef.current
-    ) {
-      const rect = dialogRef.current.getBoundingClientRect();
-
-      const isOutsideOfDialogRect =
-        event.clientY < rect.top ||
-        event.clientY > rect.bottom ||
-        event.clientX < rect.left ||
-        event.clientX > rect.right;
-
-      if (isOutsideOfDialogRect === true) {
+      if (isOutside === true) {
         setOpen(false);
+      } else if (
+        dialogRef.current !== null &&
+        event.target === dialogRef.current
+      ) {
+        const rect = dialogRef.current.getBoundingClientRect();
+
+        const isOutsideOfDialogRect =
+          event.clientY < rect.top ||
+          event.clientY > rect.bottom ||
+          event.clientX < rect.left ||
+          event.clientX > rect.right;
+
+        if (isOutsideOfDialogRect === true) {
+          setOpen(false);
+        }
       }
     }
   };
 
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        setOpen(false);
-      }
-    };
+  const onDialogClose: React.ReactEventHandler<HTMLDialogElement> = (event) => {
+    event.preventDefault();
 
-    document.addEventListener("keydown", onKeyDown);
+    if (dismiss === true) {
+      setOpen(false);
+    }
+  };
 
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, []);
+  const onDialogKeyDown: React.KeyboardEventHandler<HTMLDialogElement> = (
+    event
+  ) => {
+    if (dismiss === false && event.key === "Escape") {
+      event.preventDefault();
+    }
+  };
 
   useEffect(() => {
     dialogRef.current?.showModal();
@@ -93,12 +98,16 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
         {open === true && (
           <motion.dialog
             ref={dialogRef}
+            className={clsx(styles.dialog, className)}
             initial={initial}
             animate={animate}
             exit={exit}
             transition={transition}
-            className={clsx(styles.dialog, className)}
             onClick={onDismiss}
+            onCancel={onDialogClose}
+            onKeyDown={onDialogKeyDown}
+            role="dialog"
+            aria-modal="true"
           >
             {children}
           </motion.dialog>
