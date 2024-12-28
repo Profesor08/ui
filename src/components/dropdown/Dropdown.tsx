@@ -11,7 +11,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import styles from "./Dropdown.module.css";
 
 export interface DropdownProps {
@@ -50,20 +50,16 @@ const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> & {
 
   const interactions = useInteractions([click, dismiss, role]);
 
-  const context = useMemo(() => {
-    return {
-      open,
-      onClose: () => setOpen(false),
-      width,
-    };
-  }, [open]);
+  const context = {
+    open,
+    onClose: () => setOpen(false),
+    width,
+  };
 
-  const innerContext = useMemo(() => {
-    return {
-      floating,
-      interactions,
-    };
-  }, [floating, interactions]);
+  const innerContext = {
+    floating,
+    interactions,
+  };
 
   return (
     <DropdownContext.Provider value={context}>
@@ -121,8 +117,8 @@ const Menu: React.FC<React.PropsWithChildren> = ({ children }) => {
     typeof context.width === "number" || context.width === "auto"
       ? context.width
       : context.width === "fit"
-      ? floating.elements.domReference?.clientWidth
-      : undefined;
+        ? floating.elements.domReference?.clientWidth
+        : undefined;
 
   const minWidth =
     context.width === "fill"

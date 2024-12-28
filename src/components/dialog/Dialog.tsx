@@ -16,7 +16,7 @@ export interface DialogProps extends HTMLMotionProps<"dialog"> {
 export interface DialogContextProps {
   dialogRef: React.RefObject<HTMLDialogElement | null>;
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  close: () => void;
 }
 
 const DialogContext = createContext<DialogContextProps>({
@@ -24,7 +24,7 @@ const DialogContext = createContext<DialogContextProps>({
     current: null,
   },
   open: false,
-  setOpen: () => {},
+  close: () => {},
 });
 
 export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
@@ -50,7 +50,9 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
   const context = {
     dialogRef,
     open,
-    setOpen,
+    close: () => {
+      setOpen(false);
+    },
   };
 
   const onDismiss: React.PointerEventHandler = (event) => {
@@ -124,7 +126,7 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
         )}
       </AnimatePresence>
     </DialogContext.Provider>,
-    document.body
+    document.body,
   );
 };
 

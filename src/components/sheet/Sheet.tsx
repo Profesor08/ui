@@ -55,7 +55,7 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
 
   const onDragEnd: DragHandlers["onDrag"] = (_, info) => {
     if (info.velocity.y > 150) {
-      dialogContext.current?.setOpen(false);
+      dialogContext.current?.close();
     }
   };
 

@@ -34,8 +34,8 @@ export const Default: Story = {
             <Sheet.Header className={styles.heder}>
               <div className={styles.title}>Example Sheet</div>
               <Sheet.Context.Consumer>
-                {({ setOpen }) => (
-                  <div className={styles.close} onClick={() => setOpen(false)}>
+                {(context) => (
+                  <div className={styles.close} onClick={() => context.close()}>
                     x
                   </div>
                 )}
@@ -75,8 +75,8 @@ export const CustomAnimation: Story = {
             <div className={styles.heder}>
               <div className={styles.title}>Example Sheet</div>
               <Sheet.Context.Consumer>
-                {({ setOpen }) => (
-                  <div className={styles.close} onClick={() => setOpen(false)}>
+                {(context) => (
+                  <div className={styles.close} onClick={() => context.close()}>
                     x
                   </div>
                 )}

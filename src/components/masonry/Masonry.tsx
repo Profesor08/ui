@@ -1,18 +1,10 @@
 import { Masonry as MasonryDOM } from "@prof-dev/masonry";
-import {
-  forwardRef,
-  useImperativeHandle,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import { useLayoutEffect, useRef } from "react";
 
-export const Masonry = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->((props, ref) => {
+export const Masonry: React.FC<React.HTMLAttributes<HTMLDivElement>> = (
+  props,
+) => {
   const instanceRef = useRef<HTMLDivElement>(null);
-
-  useImperativeHandle(ref, () => instanceRef.current!);
 
   useLayoutEffect(() => {
     if (instanceRef.current !== null) {
@@ -27,4 +19,4 @@ export const Masonry = forwardRef<
   }, []);
 
   return <div ref={instanceRef} {...props} />;
-});
+};
