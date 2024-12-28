@@ -1,10 +1,12 @@
+import { mergeRefs } from "@/utils/merge-refs";
 import clsx from "clsx";
-import { AnimatePresence, AnimationProps, motion } from "motion/react";
+import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
 import React, { createContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "./Dialog.module.css";
 
-export interface DialogProps extends AnimationProps {
+export interface DialogProps extends HTMLMotionProps<"dialog"> {
+  ref?: React.RefObject<HTMLDialogElement | null>;
   onClose?: () => void;
   className?: string;
   duration?: number;
@@ -12,13 +14,17 @@ export interface DialogProps extends AnimationProps {
 }
 
 export interface DialogContextProps {
+  dialogRef: React.RefObject<HTMLDialogElement | null>;
   open: boolean;
-  onClose: () => void;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DialogContext = createContext<DialogContextProps>({
+  dialogRef: {
+    current: null,
+  },
   open: false,
-  onClose: () => {},
+  setOpen: () => {},
 });
 
 export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
@@ -33,19 +39,21 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
   animate = { opacity: 1, translateY: 0 },
   exit = { opacity: 0, translateY: "-1rem" },
   transition = { duration, ease: [0.175, 0.885, 0.32, 1.275] },
+  variants,
+  ref,
+  ...props
 }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const [open, setOpen] = useState(true);
 
   const context = {
+    dialogRef,
     open,
-    onClose: () => {
-      setOpen(false);
-    },
+    setOpen,
   };
 
-  const onDismiss = (event: React.MouseEvent) => {
+  const onDismiss: React.PointerEventHandler = (event) => {
     if (dismiss === true) {
       const isOutside =
         event.target instanceof Node &&
@@ -72,7 +80,7 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
     }
   };
 
-  const onDialogClose: React.ReactEventHandler<HTMLDialogElement> = (event) => {
+  const onDialogClose: React.ReactEventHandler = (event) => {
     event.preventDefault();
 
     if (dismiss === true) {
@@ -80,13 +88,13 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
     }
   };
 
-  const onDialogKeyDown: React.KeyboardEventHandler<HTMLDialogElement> = (
-    event
-  ) => {
+  const onDialogKeyDown: React.KeyboardEventHandler = (event) => {
     if (dismiss === false && event.key === "Escape") {
       event.preventDefault();
     }
   };
+
+  const mergedRefs = mergeRefs([ref, dialogRef]);
 
   useEffect(() => {
     dialogRef.current?.showModal();
@@ -97,17 +105,19 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
       <AnimatePresence onExitComplete={onClose}>
         {open === true && (
           <motion.dialog
-            ref={dialogRef}
+            ref={mergedRefs}
             className={clsx(styles.dialog, className)}
             initial={initial}
             animate={animate}
             exit={exit}
             transition={transition}
-            onClick={onDismiss}
+            variants={variants}
+            onPointerDown={onDismiss}
             onCancel={onDialogClose}
             onKeyDown={onDialogKeyDown}
             role="dialog"
             aria-modal="true"
+            {...props}
           >
             {children}
           </motion.dialog>

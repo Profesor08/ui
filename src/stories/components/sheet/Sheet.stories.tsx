@@ -31,16 +31,16 @@ export const Default: Story = {
 
         {open === true && (
           <Sheet className={styles.sheet} onClose={() => setOpen(false)}>
-            <div className={styles.heder}>
+            <Sheet.Header className={styles.heder}>
               <div className={styles.title}>Example Sheet</div>
               <Sheet.Context.Consumer>
-                {({ onClose }) => (
-                  <div className={styles.close} onClick={onClose}>
+                {({ setOpen }) => (
+                  <div className={styles.close} onClick={() => setOpen(false)}>
                     x
                   </div>
                 )}
               </Sheet.Context.Consumer>
-            </div>
+            </Sheet.Header>
             <div className={styles.body}>
               <div className={styles.text}>
                 This example demonstrates how to use a headless sheet component,
@@ -75,8 +75,8 @@ export const CustomAnimation: Story = {
             <div className={styles.heder}>
               <div className={styles.title}>Example Sheet</div>
               <Sheet.Context.Consumer>
-                {({ onClose }) => (
-                  <div className={styles.close} onClick={onClose}>
+                {({ setOpen }) => (
+                  <div className={styles.close} onClick={() => setOpen(false)}>
                     x
                   </div>
                 )}
