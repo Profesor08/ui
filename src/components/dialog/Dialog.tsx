@@ -1,12 +1,18 @@
-import { mergeRefs } from "@/utils/merge-refs";
 import clsx from "clsx";
 import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
-import React, { createContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import styles from "./Dialog.module.css";
 
 export interface DialogProps extends HTMLMotionProps<"dialog"> {
   ref?: React.RefObject<HTMLDialogElement | null>;
+  contextRef?: React.RefObject<DialogContextProps | null>;
   onClose?: () => void;
   className?: string;
   duration?: number;
@@ -41,9 +47,12 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
   transition = { duration, ease: [0.175, 0.885, 0.32, 1.275] },
   variants,
   ref,
+  contextRef,
   ...props
 }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useImperativeHandle(ref, () => dialogRef.current!);
 
   const [open, setOpen] = useState(true);
 
@@ -54,6 +63,10 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
       setOpen(false);
     },
   };
+
+  useImperativeHandle(contextRef, () => context);
+
+  useImperativeHandle(ref, () => dialogRef.current!);
 
   const onDismiss: React.PointerEventHandler = (event) => {
     if (dismiss === true) {
@@ -96,8 +109,6 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
     }
   };
 
-  const mergedRefs = mergeRefs([ref, dialogRef]);
-
   useEffect(() => {
     dialogRef.current?.showModal();
   }, []);
@@ -107,7 +118,7 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
       <AnimatePresence onExitComplete={onClose}>
         {open === true && (
           <motion.dialog
-            ref={mergedRefs}
+            ref={dialogRef}
             className={clsx(styles.dialog, className)}
             initial={initial}
             animate={animate}

@@ -44,6 +44,7 @@ export default [
           allow: ["warn", "error"],
         },
       ],
+      "@typescript-eslint/no-unused-vars": "warn",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react/display-name": "off",

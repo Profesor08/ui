@@ -19,7 +19,6 @@ export interface SheetProps extends Pick<AnimationProps, "transition"> {
 
 interface SheetContextProps {
   controls: DragControls;
-  setDialog: (dialog: DialogContextProps) => void;
 }
 
 const SheetContext = createContext<SheetContextProps>({} as SheetContextProps);
@@ -44,18 +43,15 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
 
   const controls = useDragControls();
 
-  const dialogContext = useRef<DialogContextProps>(undefined);
+  const dialogContextRef = useRef<DialogContextProps>(null);
 
   const context: SheetContextProps = {
     controls,
-    setDialog: (dialog) => {
-      dialogContext.current = dialog;
-    },
   };
 
   const onDragEnd: DragHandlers["onDrag"] = (_, info) => {
     if (info.velocity.y > 150) {
-      dialogContext.current?.close();
+      dialogContextRef.current?.close();
     }
   };
 
@@ -63,6 +59,7 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
     <SheetContext.Provider value={context}>
       <Dialog
         ref={ref}
+        contextRef={dialogContextRef}
         className={clsx(styles.sheet, className)}
         onClose={onClose}
         initial={initial}
@@ -87,11 +84,9 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
 };
 
 const Header: React.FC<HTMLMotionProps<"div">> = ({ className, ...props }) => {
-  const dialog = use(Dialog.Context);
   const sheet = use(SheetContext);
 
   const onPointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
-    sheet.setDialog(dialog);
     sheet.controls.start(event);
   };
 
