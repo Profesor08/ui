@@ -17,7 +17,7 @@
     "lint": "npx eslint",
     "build": "vite build && storybook build -o dist-storybook",
     "prebuild": "npm run lint",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist-storybook",
     "storybook": "storybook dev -p 3000",
