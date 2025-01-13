@@ -11,10 +11,12 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
+import clsx from "clsx";
 import { createContext, useContext, useState } from "react";
 import styles from "./Dropdown.module.css";
 
 export interface DropdownProps {
+  className?: string;
   placement?: Placement;
   padding?: number;
   width?: number | "auto" | "fit" | "fill";
@@ -24,7 +26,13 @@ const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> & {
   Context: typeof DropdownContext;
   Toggle: typeof Toggle;
   Menu: typeof Menu;
-} = ({ placement = "bottom-end", padding = 12, width, children }) => {
+} = ({
+  className,
+  placement = "bottom-end",
+  padding = 12,
+  width,
+  children,
+}) => {
   const [open, setOpen] = useState(false);
 
   const floating = useFloating({
@@ -64,7 +72,7 @@ const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> & {
   return (
     <DropdownContext.Provider value={context}>
       <DropdownInnerContext.Provider value={innerContext}>
-        <div className={styles.dropdown}>{children}</div>
+        <div className={clsx(styles.dropdown, className)}>{children}</div>
       </DropdownInnerContext.Provider>
     </DropdownContext.Provider>
   );
@@ -91,13 +99,17 @@ const DropdownInnerContext = createContext<DropdownInnerContextProps>({
   interactions: undefined as unknown as ReturnType<typeof useInteractions>,
 });
 
-const Toggle: React.FC<React.PropsWithChildren> = ({ children }) => {
+const Toggle: React.FC<
+  React.PropsWithChildren<{
+    className?: string;
+  }>
+> = ({ className, children }) => {
   const { floating, interactions } = useContext(DropdownInnerContext);
 
   return (
     <div
       ref={floating.refs.setReference}
-      className={styles.toggle}
+      className={clsx(styles.toggle, className)}
       {...interactions.getReferenceProps()}
     >
       {children}
@@ -105,7 +117,11 @@ const Toggle: React.FC<React.PropsWithChildren> = ({ children }) => {
   );
 };
 
-const Menu: React.FC<React.PropsWithChildren> = ({ children }) => {
+const Menu: React.FC<
+  React.PropsWithChildren<{
+    className?: string;
+  }>
+> = ({ className, children }) => {
   const context = useContext(DropdownContext);
   const { floating, interactions } = useContext(DropdownInnerContext);
 
@@ -129,7 +145,7 @@ const Menu: React.FC<React.PropsWithChildren> = ({ children }) => {
     <FloatingPortal>
       <div
         ref={floating.refs.setFloating}
-        className={styles.menu}
+        className={clsx(styles.menu, className)}
         style={{
           ...floating.floatingStyles,
           width,
