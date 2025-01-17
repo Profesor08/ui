@@ -1,6 +1,7 @@
-import { AnimationProps, HTMLMotionProps } from 'motion/react';
+import { HTMLMotionProps } from 'motion/react';
 import { Dialog } from '../dialog/Dialog';
-export interface SheetProps extends Pick<AnimationProps, "transition"> {
+export interface SheetProps extends HTMLMotionProps<"dialog"> {
+    ref?: React.RefObject<HTMLDialogElement | null>;
     onClose?: () => void;
     className?: string;
     duration?: number;
