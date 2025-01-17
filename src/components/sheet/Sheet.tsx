@@ -8,7 +8,7 @@ import {
   useDragControls,
 } from "motion/react";
 import { createContext, use, useRef } from "react";
-import { Dialog, DialogContextProps } from "../dialog/Dialog";
+import { Dialog, DialogRef } from "../dialog/Dialog";
 import styles from "./Sheet.module.css";
 
 export interface SheetProps extends Pick<AnimationProps, "transition"> {
@@ -33,7 +33,7 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
   duration = 0.3,
   transition = { duration, ease: [0.25, 0.1, 0.25, 1] },
 }) => {
-  const ref = useRef<HTMLDialogElement>(null);
+  const ref = useRef<DialogRef>(null);
 
   const initial = { opacity: 0, translateY: "100%" };
 
@@ -43,15 +43,13 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
 
   const controls = useDragControls();
 
-  const dialogContextRef = useRef<DialogContextProps>(null);
-
   const context: SheetContextProps = {
     controls,
   };
 
   const onDragEnd: DragHandlers["onDrag"] = (_, info) => {
     if (info.velocity.y > 150) {
-      dialogContextRef.current?.close();
+      ref.current?.context.close();
     }
   };
 
@@ -59,7 +57,6 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
     <SheetContext.Provider value={context}>
       <Dialog
         ref={ref}
-        contextRef={dialogContextRef}
         className={clsx(styles.sheet, className)}
         onClose={onClose}
         initial={initial}

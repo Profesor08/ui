@@ -11,12 +11,15 @@ import { createPortal } from "react-dom";
 import styles from "./Dialog.module.css";
 
 export interface DialogProps extends HTMLMotionProps<"dialog"> {
-  ref?: React.RefObject<HTMLDialogElement | null>;
-  contextRef?: React.RefObject<DialogContextProps | null>;
+  ref?: React.RefObject<DialogRef | null>;
   onClose?: () => void;
   className?: string;
   duration?: number;
   dismiss?: boolean;
+}
+
+export interface DialogRef extends HTMLDialogElement {
+  context: DialogContextProps;
 }
 
 export interface DialogContextProps {
@@ -47,12 +50,9 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
   transition = { duration, ease: [0.175, 0.885, 0.32, 1.275] },
   variants,
   ref,
-  contextRef,
   ...props
 }) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
-
-  useImperativeHandle(ref, () => dialogRef.current!);
 
   const [open, setOpen] = useState(true);
 
@@ -64,9 +64,13 @@ export const Dialog: React.FC<React.PropsWithChildren<DialogProps>> & {
     },
   };
 
-  useImperativeHandle(contextRef, () => context);
+  useImperativeHandle(ref, () => {
+    const exposedRef = dialogRef.current! as DialogRef;
 
-  useImperativeHandle(ref, () => dialogRef.current!);
+    exposedRef.context = context;
+
+    return exposedRef;
+  });
 
   const onDismiss: React.PointerEventHandler = (event) => {
     if (dismiss === true) {
