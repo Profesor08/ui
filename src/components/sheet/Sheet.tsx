@@ -1,17 +1,17 @@
 import clsx from "clsx";
 import {
-  AnimationProps,
   DragControls,
   DragHandlers,
   HTMLMotionProps,
   motion,
   useDragControls,
 } from "motion/react";
-import { createContext, use, useRef } from "react";
+import { createContext, use, useImperativeHandle, useRef } from "react";
 import { Dialog, DialogRef } from "../dialog/Dialog";
 import styles from "./Sheet.module.css";
 
-export interface SheetProps extends Pick<AnimationProps, "transition"> {
+export interface SheetProps extends HTMLMotionProps<"dialog"> {
+  ref?: React.RefObject<HTMLDialogElement | null>;
   onClose?: () => void;
   className?: string;
   duration?: number;
@@ -32,8 +32,14 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
   children,
   duration = 0.3,
   transition = { duration, ease: [0.25, 0.1, 0.25, 1] },
+  ref,
+  ...props
 }) => {
-  const ref = useRef<DialogRef>(null);
+  const dialogRef = useRef<DialogRef>(null);
+
+  useImperativeHandle(ref, () => {
+    return dialogRef.current!;
+  });
 
   const initial = { opacity: 0, translateY: "100%" };
 
@@ -49,14 +55,14 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
 
   const onDragEnd: DragHandlers["onDrag"] = (_, info) => {
     if (info.velocity.y > 150) {
-      ref.current?.context.close();
+      dialogRef.current?.context.close();
     }
   };
 
   return (
     <SheetContext.Provider value={context}>
       <Dialog
-        ref={ref}
+        ref={dialogRef}
         className={clsx(styles.sheet, className)}
         onClose={onClose}
         initial={initial}
@@ -73,6 +79,7 @@ export const Sheet: React.FC<React.PropsWithChildren<SheetProps>> & {
         dragElastic={0.1}
         dragSnapToOrigin={true}
         onDragEnd={onDragEnd}
+        {...props}
       >
         {children}
       </Dialog>
