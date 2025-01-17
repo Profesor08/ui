@@ -59,8 +59,8 @@ export const Default: Story = {
             <div className={styles.heder}>
               <div className={styles.title}>Example Dialog</div>
               <Dialog.Context.Consumer>
-                {({ onClose }) => (
-                  <div className={styles.close} onClick={onClose}>
+                {(context) => (
+                  <div className={styles.close} onClick={() => context.close()}>
                     x
                   </div>
                 )}
@@ -115,8 +115,8 @@ export const CustomAnimation: Story = {
             <div className={styles.heder}>
               <div className={styles.title}>Example Dialog</div>
               <Dialog.Context.Consumer>
-                {({ onClose }) => (
-                  <div className={styles.close} onClick={onClose}>
+                {(context) => (
+                  <div className={styles.close} onClick={() => context.close()}>
                     x
                   </div>
                 )}
