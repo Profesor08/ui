@@ -19,6 +19,12 @@ export interface DropdownProps {
   className?: string;
   placement?: Placement;
   padding?: number;
+  /**
+   * number - set fixed menu width
+   * auto - width is set by the content, same as if not set
+   * fit - set fixed width same as toggle width
+   * fill - set min width same as toggle width and allow to expand
+   */
   width?: number | "auto" | "fit" | "fill";
 }
 
@@ -28,9 +34,9 @@ const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> & {
   Menu: typeof Menu;
 } = ({
   className,
-  placement = "bottom-end",
+  placement = "bottom",
   padding = 12,
-  width,
+  width = "fit",
   children,
 }) => {
   const [open, setOpen] = useState(false);
